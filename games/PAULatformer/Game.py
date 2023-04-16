@@ -2,13 +2,17 @@ import os
 import time
 import json
 import pygame
+from pygame.locals import *
 import textwrap
 import sys
 from importlib.machinery import SourceFileLoader
-pygame.init()
+#pygame.init()
 maindir = os.path.abspath(os.path.dirname(__file__))
 bkgrddir = os.path.join(maindir, 'assets', 'backgrounds')
 sounddir = os.path.join(maindir, 'assets', 'sounds')
+
+pygame.joystick.init()
+joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
 
 # PAUL """API"""
 def post_highscore(posted_score, posted_game="None", paul_endpoint="https://paulis.online/endpoint", maindir_int=maindir):
@@ -130,6 +134,10 @@ def textbox(text, x=50, y=500, delay=0.05, background_color=(0, 0, 0), text_colo
                 if event.key == pygame.K_c:
                     text_displayed = False
                     break
+            if event.type == JOYBUTTONDOWN:
+                if event.button == 2:
+                    text_displayed = False
+                    break
         time.sleep(0.1)
 
 
@@ -188,6 +196,27 @@ def game_loop(level, coin_counter_func = 0, death_counter = 0):
                     arr_list.remove('right')
                 if event.key in [pygame.K_LEFT, pygame.K_a] and 'left' in arr_list:
                     arr_list.remove('left')
+            if event.type == JOYBUTTONDOWN:
+                if event.button == 0:
+                    if not jump_flag: jump_sound.play()
+                    jump_flag = True
+                if event.button == 2:
+                    read_flag = True
+                if event.button == 1:
+                    crouch_flag = [False, True][crouch_flag == False]
+                if event.button == 14:
+                    arr_list.append('right') if 'right' not in arr_list else None
+                if event.button == 13:
+                    arr_list.append('left') if 'left' not in arr_list else None
+            if event.type == JOYBUTTONUP:
+                if event.button == 14 and 'right' in arr_list:
+                    arr_list.remove('right')
+                if event.button == 13 and 'left' in arr_list:
+                    arr_list.remove('left')
+
+
+
+
         if break_flag: break
 
         screen.blit(level_background, (0,0))
