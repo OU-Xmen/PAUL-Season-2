@@ -67,7 +67,7 @@ button_rects = [
 d_games = {
     1: ["Puzzle", "Asteroids", "Tetris", "Pong", "Hangman", "Mad Libs", "Scoreboard"],
     2: ["Checkers", "Chess", "Guess the Number", "Snake", "Tic Tac Toe", "Connect 4", "Scoreboard"],
-    3: ["Mancala", "RPS", "PAULatformer", None, None, None, "Scoreboard"]
+    3: ["Mancala", "RPS", "PAULatformer", "Minesweeper", None, None, "Scoreboard"]
 }
 
 
